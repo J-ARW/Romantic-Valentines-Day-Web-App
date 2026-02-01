@@ -1,10 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const audio = document.getElementById('background-music');
-    const muteButton = document.getElementById('mute-button');
-    const volumeSlider = document.getElementById('volume-slider');
-    const icon = muteButton.querySelector("i");
-    const videoCard = document.querySelector(".aside.left"); // Video card
-    const video = videoCard.querySelector("video"); // Get video element
     const clickButton = document.querySelector(".click-box button");
     const choiceBox = document.querySelector(".choice-box");
     const threedBox = document.querySelector(".threed-box");
@@ -33,11 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to handle the click event
     function revealChoices() {
-        audio.pause(); // Stop background music
-        audio.currentTime = 0; // Reset music
-
-        videoCard.classList.remove("hide"); // Show video card
-        video.play(); // Play the funny video
 
         clickButton.style.display = "none"; // Hide the button
         choiceBox.classList.remove("hide"); // Show Yes/No options

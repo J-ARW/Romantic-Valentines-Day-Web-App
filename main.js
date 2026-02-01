@@ -89,11 +89,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     let noCooldown - false; //Prevent multiple triggers at once
+    let noAttempts = 0; // Count how many times the user tried to click No
+    const maxAttempts= 5; // Only allow 5 dodges
 
     noButton.addEventListener("mouseenter", function () {
         if (noCooldown) return; // If cooldown active, do nothing
-        no cooldown = true;    // Activate Cooldown
+        if (noAttempts >= maxNoAttempts) return; // Stop moving after max attempts
         
+        noCooldown = true;
         noClickCount++;
 
         // Move No Button
@@ -113,10 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".typed-text").innerHTML = taunt;
 
         // Final Lock
-        if (noClickCount >= 6) {
-            noButton.style.display = "none";
-            questionText.innerHTML +=
-                `<br><span class="no-choice-text">You are out of options 🤭</span>`;
+        if (noAttemps >= maxNoAttempts) {
+            setTimeout(() => {
+                noButton.style.display = "none";
+                questionText.innerHTML +=
+                    `<br><span class="no-choice-text">You are out of options 🤭</span>`;
+            }, 500); 
         }
 
         // Reset Cooldown after short delay so user can trigger again

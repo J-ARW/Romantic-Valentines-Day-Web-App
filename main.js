@@ -88,27 +88,41 @@ document.addEventListener("DOMContentLoaded", function () {
         createHearts();
     });
 
+    let noCooldown - false; //Prevent multiple triggers at once
+
     noButton.addEventListener("mouseenter", function () {
+        if (noCooldown) return; // If cooldown active, do nothing
+        no cooldown = true;    // Activate Cooldown
+        
         noClickCount++;
 
+        // Move No Button
         moveNoButton();
 
+        // Shake effect
         noButton.classList.add("shake");
         setTimeout(() => noButton.classList.remove("shake"), 300);
 
+        // Grow Yes Button
         yesScale += 0.15;
         yesButton.style.transform = `scale(${yesScale})`;
 
+        // Show Taunt
         const taunt =
             tauntMessages[Math.min(noClickCount - 1, tauntMessages.length - 1)];
-
         document.querySelector(".typed-text").innerHTML = taunt;
 
+        // Final Lock
         if (noClickCount >= 6) {
             noButton.style.display = "none";
             questionText.innerHTML +=
                 `<br><span class="no-choice-text">You are out of options 🤭</span>`;
         }
+
+        // Reset Cooldown after short delay so user can trigger again
+        setTimeout(() => {
+            noCooldown = false;
+        }, 400; // 400ms is enough time for button to move and shake
     });
 
     clickButton.addEventListener("click", revealChoices);

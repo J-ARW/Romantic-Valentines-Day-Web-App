@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Buttons and boxes
+    // BUTTONS & BOXES
     const clickButton = document.querySelector(".click-box button");
     const choiceBox = document.querySelector(".choice-box");
     const threedBox = document.querySelector(".threed-box");
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const yesButton = document.querySelector(".choice-box button:first-child");
     const noButton = document.querySelector(".choice-box button:last-child");
 
-    // Settings
+    // SETTINGS
     let partnerName = "LILY";
     let noAttempts = 0;
     const maxNoAttempts = 5;
@@ -56,8 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // MOVE NO BUTTON NEAR YES
     function moveNoButtonNearYes() {
         const yesRect = yesButton.getBoundingClientRect();
-        const padding = 10;
-
         const offsetX = (Math.random() - 0.5) * 100; // ±50px
         const offsetY = (Math.random() - 0.5) * 50;  // ±25px
 
@@ -83,47 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             typeWriterEffect(typedTextElement, "Will you be my Valentine?");
         }, 500);
-
-        // Attach No hover AFTER button is visible
-        attachNoHover();
-    }
-
-    // HANDLE NO BUTTON HOVER
-    function attachNoHover() {
-        noButton.addEventListener("mouseenter", function () {
-            if (hoverCooldown) return;
-            if (noAttempts >= maxNoAttempts) return;
-
-            hoverCooldown = true;
-            noAttempts++;
-
-            moveNoButtonNearYes();
-
-            // Grow Yes button
-            yesScale += 0.15;
-            yesButton.style.transform = `scale(${yesScale})`;
-
-            // Show taunt
-            const taunt = tauntMessages[Math.min(noAttempts - 1, tauntMessages.length - 1)];
-            document.querySelector(".typed-text").innerHTML = taunt;
-
-            // Shake No button
-            noButton.classList.add("shake");
-            setTimeout(() => noButton.classList.remove("shake"), 300);
-
-            // Reset cooldown after 500ms
-            setTimeout(() => {
-                hoverCooldown = false;
-            }, 500);
-
-            // After max attempts, hide No and show final text
-            if (noAttempts >= maxNoAttempts) {
-                setTimeout(() => {
-                    noButton.style.display = "none";
-                    questionText.innerHTML += `<br><span class="no-choice-text">You're out of options 🤭</span>`;
-                }, 500);
-            }
-        });
     }
 
     // YES BUTTON CLICK
@@ -135,6 +92,42 @@ document.addEventListener("DOMContentLoaded", function () {
         choiceBox.style.display = "none";
         threedBox.classList.remove("hide");
         createHearts();
+    });
+
+    // NO BUTTON HOVER
+    noButton.addEventListener("mouseenter", function () {
+        if (hoverCooldown) return;
+        if (noAttempts >= maxNoAttempts) return;
+
+        hoverCooldown = true;
+        noAttempts++;
+
+        moveNoButtonNearYes();
+
+        // Grow Yes button
+        yesScale += 0.15;
+        yesButton.style.transform = `scale(${yesScale})`;
+
+        // Show taunt
+        const taunt = tauntMessages[Math.min(noAttempts - 1, tauntMessages.length - 1)];
+        document.querySelector(".typed-text").innerHTML = taunt;
+
+        // Shake No button
+        noButton.classList.add("shake");
+        setTimeout(() => noButton.classList.remove("shake"), 300);
+
+        // Reset cooldown after 500ms
+        setTimeout(() => {
+            hoverCooldown = false;
+        }, 500);
+
+        // After max attempts, hide No and show final text
+        if (noAttempts >= maxNoAttempts) {
+            setTimeout(() => {
+                noButton.style.display = "none";
+                questionText.innerHTML += `<br><span class="no-choice-text">You're out of options 🤭</span>`;
+            }, 500);
+        }
     });
 
     // START BUTTON CLICK

@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Reset Cooldown after short delay so user can trigger again
         setTimeout(() => {
             noCooldown = false;
-        }, 400; // 400ms is enough time for button to move and shake
+        }, 3000; // 400ms is enough time for button to move and shake
     });
 
     clickButton.addEventListener("click", revealChoices);

@@ -8,6 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let partnerName = "LILY"; // Replace with dynamic value
     let noClickCount = 0; // Counter for No button clicks
+    let yesScale = 1; // Yes Scales
+    let tauntMessages = [ // Taunt Messages
+        "Nice Try 😏",
+        "Not Happening",
+        "You sure about that?",
+        "Just click yes",
+        "We both know the answer"
+    ];
 
     // Function to create typewriter effect
     function typeWriterEffect(element, text, speed = 100) {
@@ -55,7 +63,21 @@ document.addEventListener("DOMContentLoaded", function () {
             heart.style.animationDuration = Math.random() * 2 + 3 + "s";
             
             heartContainer.appendChild(heart);
-        }
+    }
+        
+    function moveNoButton() {
+        const buttonRect = noButton.getBoundingClientRect();
+        const maxX = window.innerWidth - buttonRect.width;
+        const maxY = window.innerHeight - buttonRect.height;
+
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        noButton.style.position = "fixed";
+        noButton.style.left = `${randomX}px`;
+        noButton.style.top = `${randomY}px`;
+        
+    }
     
         // Remove hearts after animation ends
         setTimeout(() => {
@@ -71,22 +93,43 @@ document.addEventListener("DOMContentLoaded", function () {
         createHearts();
     });
 
-      // Handle "No" button click
-    noButton.addEventListener("click", function () {
+      // Handle "No" button click with movement
+    noButton.addEventListener("mouseenter", function () {
         noClickCount++; // Increment No click count
 
-        if (noClickCount < 5) {
-            let newNoSize = 16 - noClickCount * 2; // Reduce No button size
-            let newYesSize = 18 + noClickCount * 5; // Increase Yes button size
+       // Move No Button (Stay In Screen)
+        const buttonRect = noButton.getBoundingClientRect();
+        const padding = 20;
 
-            noButton.style.fontSize = `${newNoSize}px`;
-            noButton.style.padding = `${newNoSize / 2}px ${newNoSize}px`;
+        const maxX = window.innerWidth - buttonRect.width - padding;
+        const maxY = window.innerHeight - buttonRect.height - padding;
 
-            yesButton.style.fontSize = `${newYesSize}px`;
-            yesButton.style.padding = `${newYesSize / 2}px ${newYesSize}px`;
-        } else {
-            noButton.style.display = "none"; // Hide No button after 5 clicks
-            questionText.innerHTML += `<br><span class="no-choice-text">Did you really think you had a choice? 🤭</span>`;
+        const randomX = Math.random() * maxX + padding;
+        const randomY = Math.random() * maxY + padding;
+
+        noButton.style.position = "fixed";
+        noButton.style.left = '${randomX}px';
+        noButton.style.top = '${randomY}px';
+
+        // Shake Effect
+        noButton.classList.add("shake");
+        setTimout(() => noButton.classList.remove("shake"), 300);
+
+        // Grow Yes Button
+        yesScale += 0.15;
+        yesButton.style.transform = 'scale(${yesScale})';
+
+        // Taunting Text
+        const taunt = 
+            tauntMessages[Math.min(noClickCount - 1, tauntMessages.length - 1)];
+
+        questionText.querySelector(".typed-text").innerHTML = taunt;
+
+        // Final Lock in
+        if (noClickCount >=6) {
+            noButton.style.display = "none";
+            questionText.innerHTML += '<br><span class="no-choice-text">You're out of options? <span>';
+
         }
     });
 

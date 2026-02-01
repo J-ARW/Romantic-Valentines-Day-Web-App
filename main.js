@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (noClickCount >= 6) {
             noButton.style.display = "none";
             questionText.innerHTML +=
-                `<br><span class="no-choice-text">You’re out of options 🤭</span>`;
+                `<br><span class="no-choice-text">You are out of options 🤭</span>`;
         }
     });
 

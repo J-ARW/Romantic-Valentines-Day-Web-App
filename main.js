@@ -88,47 +88,68 @@ document.addEventListener("DOMContentLoaded", function () {
         createHearts();
     });
 
-    let noCooldown - false; //Prevent multiple triggers at once
-    let noAttempts = 0; // Count how many times the user tried to click No
-    const maxAttempts= 5; // Only allow 5 dodges
+let noAttempts = 0;
+const maxNoAttempts = 5;
+let yesScale = 1;
+const tauntMessages = [
+    "Nice try 😏",
+    "Not happening",
+    "You sure about that?",
+    "Just click yes 💗",
+    "We both know the answer 😉"
+];
+let hoverCooldown = false; // prevent multiple rapid triggers
 
-    noButton.addEventListener("mouseenter", function () {
-        if (noCooldown) return; // If cooldown active, do nothing
-        if (noAttempts >= maxNoAttempts) return; // Stop moving after max attempts
-        
-        noCooldown = true;
-        noClickCount++;
+function moveNoButtonNearYes() {
+    const yesRect = yesButton.getBoundingClientRect();
+    const padding = 10;
 
-        // Move No Button
-        moveNoButton();
+    // Random position near Yes button (keeps it close)
+    const offsetX = (Math.random() - 0.5) * 100; // ±50px
+    const offsetY = (Math.random() - 0.5) * 50;  // ±25px
 
-        // Shake effect
-        noButton.classList.add("shake");
-        setTimeout(() => noButton.classList.remove("shake"), 300);
+    const newX = yesRect.left + offsetX;
+    const newY = yesRect.top + offsetY;
 
-        // Grow Yes Button
-        yesScale += 0.15;
-        yesButton.style.transform = `scale(${yesScale})`;
+    noButton.style.position = "fixed";
+    noButton.style.left = `${Math.max(10, Math.min(window.innerWidth - noButton.offsetWidth - 10, newX))}px`;
+    noButton.style.top = `${Math.max(10, Math.min(window.innerHeight - noButton.offsetHeight - 10, newY))}px`;
+}
 
-        // Show Taunt
-        const taunt =
-            tauntMessages[Math.min(noClickCount - 1, tauntMessages.length - 1)];
-        document.querySelector(".typed-text").innerHTML = taunt;
+// Hover handler
+noButton.addEventListener("mouseenter", function () {
+    if (hoverCooldown) return;       // still cooling down
+    if (noAttempts >= maxNoAttempts) return; // stop after max attempts
 
-        // Final Lock
-        if (noAttemps >= maxNoAttempts) {
-            setTimeout(() => {
-                noButton.style.display = "none";
-                questionText.innerHTML +=
-                    `<br><span class="no-choice-text">You are out of options 🤭</span>`;
-            }, 500); 
-        }
+    hoverCooldown = true;  // lock until cooldown ends
+    noAttempts++;
 
-        // Reset Cooldown after short delay so user can trigger again
+    moveNoButtonNearYes();
+
+    // Grow Yes button
+    yesScale += 0.15;
+    yesButton.style.transform = `scale(${yesScale})`;
+
+    // Show Taunt
+    const taunt = tauntMessages[Math.min(noAttempts - 1, tauntMessages.length - 1)];
+    document.querySelector(".typed-text").innerHTML = taunt;
+
+    // Shake No button
+    noButton.classList.add("shake");
+    setTimeout(() => noButton.classList.remove("shake"), 300);
+
+    // Reset cooldown after button moves away
+    setTimeout(() => {
+        hoverCooldown = false;
+    }, 500); // 500ms gives time to move away & prevents instant retrigger
+
+    // After max attempts, hide No button & show final text
+    if (noAttempts >= maxNoAttempts) {
         setTimeout(() => {
-            noCooldown = false;
-        }, 3000; // 400ms is enough time for button to move and shake
-    });
-
-    clickButton.addEventListener("click", revealChoices);
+            noButton.style.display = "none";
+            questionText.innerHTML +=
+                `<br><span class="no-choice-text">You're out of options 🤭</span>`;
+        }, 500);
+    }
 });
+

@@ -124,7 +124,7 @@ h3 {
 .aside-wrapper {
     padding: 5px;
     flex: 0 0 200px; /* Fixed width to prevent stretching */
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -137,52 +137,6 @@ h3 {
     width: 100%;
     text-align: center;
     color: var(--color5);
-}
-
-/* Video Card */
-.video-card {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-    will-change: transform, box-shadow;
-    perspective: 1000px;
-    position: relative;
-}
-
-.video-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Glare Effect */
-.glare {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: inherit;
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease-out;
-    pointer-events: none;
-}
-
-.video-card:hover .glare {
-    opacity: 1;
-}
-
-.video-card video {
-    width: 100%;
-    border-radius: 15px;
 }
 
 /* Main Section */
@@ -306,33 +260,7 @@ h3 {
     color: var(--color5); /* Dark gray */
     margin-top: 10px;
     display: block;
-}
-/* Style for the mute button */
-#mute-button {
-    background-color: var(--color5);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-out, transform 0.3s ease-out;
-    font-size: 1rem;
-}
-
-#mute-button:hover {
-    background-color: var(--color5);
-    transform: scale(1.05);
-}
-
-#volume-slider {
-    width: 100%;
-    margin-top: 10px;
-    -webkit-appearance: none;
-    background: linear-gradient(to right, #A7D397, #8BBF77);
-    height: 5px;
-    border-radius: 5px;
-    outline: none;
-    cursor: pointer;
+    
 }
 
 /* Style for the slider thumb */
@@ -427,4 +355,17 @@ footer {
         transform: translateY(-100vh) scale(0.5) rotate(-45deg);
         opacity: 0;
     }
+}
+/* First screen button (pink) */
+.click-box button {
+    background-color: #ff6fae; /* Valentine pink */
+    color: white;
+    border: none;
+}
+
+.click-box button:hover {
+    background-color: #ff4f9a;
+    transform: scale(1.08);
+}
+
 }
